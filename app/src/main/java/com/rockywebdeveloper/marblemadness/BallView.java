@@ -6,7 +6,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.view.View;
 
 
@@ -15,29 +14,30 @@ import android.view.View;
  * Created by relewis on 3/11/2015.
  */
 public class BallView extends View {
-    private Bitmap ball;
-    private int x;
-    private int y;
-    public BallView(Context context) {
+
+    private static int canvasWidth;
+    private static int canvasHeight;
+    private Ball mBall;
+    public BallView(Context context, Ball ball) {
         super(context);
-        ball = BitmapFactory.decodeResource(getResources(),R.drawable.ball1);
-        x = 0;
-        y = 0;
+        mBall = ball;
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if(x == 0 && y == 0){
-            x = canvas.getWidth()/2;
-            y = canvas.getHeight()/2;
+        canvasHeight = canvas.getHeight();
+        canvasWidth = canvas.getWidth();
+        mBall.setBounds(canvasWidth, canvasHeight);
+        int x = mBall.getX();
+        int y = mBall.getY();
+        Paint paint = new Paint();
+        paint.setColor(Color.BLACK);
+        canvas.drawText("X rate of change: " + mBall.getXROC() + "\nY rate of change: " + mBall.getYROC(), 10, 10, paint);
+        canvas.drawBitmap(mBall.getImage(), x, y, new Paint());
+        if(!mBall.isBroken()) {
+            invalidate();
         }
-        canvas.drawBitmap(ball, x,y,new Paint());
     }
 
-    public void setXandY(float newX, float newY){
-        x = (int)(x + (newX*50));
-        y = (int)(y - (newY*50));
-        invalidate();
-    }
 }
