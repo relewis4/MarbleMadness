@@ -4,6 +4,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.RectF;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -36,6 +37,7 @@ public class Ball implements SensorEventListener {
     private Boolean firstTime = true;
     private Context mContext;
     private Boolean broken;
+    private RectF mRectF;
 
     public Ball(int x, int y, Context context){
         ball = BitmapFactory.decodeResource(context.getResources(), R.drawable.ball1);
@@ -52,7 +54,7 @@ public class Ball implements SensorEventListener {
         mMagSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
     }
 
-    public void setY(float newY) {
+    public void setXandY(float newX, float newY) {
         if (y - (newY * 50) <= 0) {
             y = 0;
             if(yROC > .5){
@@ -63,21 +65,23 @@ public class Ball implements SensorEventListener {
             if(yROC > .5){
                 setImage();
             }
+        } else if(onWall(x+ballWidtht - (newX*50),y-ballHeight - (newY*50))){
+
         } else {
             y = (int) (y - (newY * 50));
         }
-    }
-    public void setX(float newX) {
         if (x - (newX * 50) <= 0) {
             x = 0;
-            if(xROC > .5){
+            if (xROC > 1) {
                 setImage();
             }
-        } else if(x - (newX * 50) >= (canvasWidtht - ballWidtht)){
+        } else if (x - (newX * 50) >= (canvasWidtht - ballWidtht)) {
             x = canvasWidtht - ballWidtht;
-            if(xROC > .5){
+            if (xROC > 1) {
                 setImage();
             }
+        } else if(onWall(x+ballWidtht - (newX*50),y+ballHeight - (newY*50))){
+
         }else {
             x = (int) (x - (newX * 50));
         }
@@ -104,11 +108,15 @@ public class Ball implements SensorEventListener {
     public int getBallWidtht(){
         return ballWidtht;
     }
-    public void setBounds(int width, int height){
+    public void setBounds(int width, int height, RectF rec){
         canvasWidtht = width;
         canvasHeight = height;
+        mRectF = rec;
     }
 
+    public boolean onWall(float x, float y){
+        return mRectF.contains(x,y);
+    }
     public float getXROC (){
         return xROC;
     }
@@ -137,15 +145,14 @@ public class Ball implements SensorEventListener {
                     firstTime = false;
                 }
                 if (i == 0){
-                    xROC = axisX - oldX;
-                    yROC = axisY - oldY;
+                    xROC = (axisX - oldX) * 10;
+                    yROC = (axisY - oldY) * 10;
                     oldX = axisX;
                     oldY = axisY;
                 }
                 r++;
-                i = r%5;
-                setX(axisX);
-                setY(axisY);
+                i = r%20;
+                setXandY(axisX, axisY);
             }
         }
     }

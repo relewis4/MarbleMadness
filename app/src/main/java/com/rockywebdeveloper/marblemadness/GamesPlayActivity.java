@@ -2,6 +2,7 @@ package com.rockywebdeveloper.marblemadness;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.graphics.RectF;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -15,6 +16,7 @@ import android.widget.ImageView;
 public class GamesPlayActivity extends Activity{
     private BallView mBallView;
     private Ball mBall;
+    private RectF rec;
 
 
 
@@ -22,7 +24,8 @@ public class GamesPlayActivity extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBall = new Ball(100,100,this);
-        mBallView = new BallView(GamesPlayActivity.this,mBall);
+        rec = new RectF(1000,400,1100,1000);
+        mBallView = new BallView(GamesPlayActivity.this,mBall,rec);
         setContentView(mBallView);
         View decorView = getWindow().getDecorView();
         // Hide the status bar.
