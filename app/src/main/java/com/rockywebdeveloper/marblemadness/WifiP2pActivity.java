@@ -84,7 +84,7 @@ public class WifiP2pActivity extends ActionBarActivity implements WifiP2pManager
         if (state == WifiP2pManager.WIFI_P2P_STATE_ENABLED){
             setWifiP2pEnabled();
         } else {
-            setWifiP2pDisabled();
+            setWifiP2pDisabled();           //should disable wifiP2p somewhere at onPause
         }
     }
 
