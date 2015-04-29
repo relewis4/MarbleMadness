@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class GameController {
     private ArrayList<RectF> walls;
     private Ball homeBall;
-    private Ball awayBall;
+    private AwayBall awayBall;
     private float[] gameBounds;
 
     private Handler customHandler = new Handler();
@@ -34,7 +34,7 @@ public class GameController {
     public GameController(int homeBallX, int homeBallY, int awayBallX, int awayBallY, Context context) {
         walls = new ArrayList();
         homeBall = new Ball(homeBallX, homeBallY, context);
-        awayBall = new Ball(awayBallX, awayBallY, context);
+        awayBall = new AwayBall(awayBallX, awayBallY, context);
         //gameBounds = new float[]{circle.height(), circle.width()};
     }
 
@@ -162,9 +162,11 @@ public class GameController {
 
     public void onResume(){
         homeBall.onResume();
+        awayBall.onResume();
     }
 
     public void onPause(){
         homeBall.onPause();
+        awayBall.onPause();
     }
 }

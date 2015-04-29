@@ -21,6 +21,8 @@ public class BallView extends View {
     private static int canvasHeight;
     private int homeBallX;
     private int homeBallY;
+    private int awayBallX;
+    private int awayBallY;
 
     public BallView(Context context, GameController gameController) {
         super(context);
@@ -35,7 +37,9 @@ public class BallView extends View {
         Paint paint = new Paint();
         paint.setColor(Color.BLACK);
         setHomeBall(mGameController.getHomeBallX(), mGameController.getHomeBallY());
+        setAwayBall(mGameController.getAwayBallX(), mGameController.getAwayBallY());
         canvas.drawBitmap(mGameController.getHomeBallImage(), homeBallX, homeBallY, new Paint());
+        canvas.drawBitmap(mGameController.getAwayBallImage(), awayBallX, awayBallY, new Paint());
         invalidate();
     }
 
@@ -49,4 +53,8 @@ public class BallView extends View {
         homeBallY = y;
     }
 
+    private void setAwayBall(int x, int y) {
+        awayBallX = x;
+        awayBallY = y;
+    }
 }

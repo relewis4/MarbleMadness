@@ -37,7 +37,6 @@ public class Ball implements SensorEventListener {
 
 
     public Ball(int x, int y, Context context){
-        ball = BitmapFactory.decodeResource(context.getResources(), R.drawable.ball1);
         mContext = context;
         ballHeight = ball.getHeight();
         ballWidtht = ball.getWidth();
