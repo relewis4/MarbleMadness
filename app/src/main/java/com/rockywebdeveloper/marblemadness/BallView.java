@@ -16,14 +16,15 @@ import android.view.View;
  */
 public class BallView extends View {
 
+    private GameController mGameController;
     private static int canvasWidth;
     private static int canvasHeight;
-    private Ball mBall;
-    private RectF mRec;
-    public BallView(Context context, Ball ball, RectF rec) {
+    private int homeBallX;
+    private int homeBallY;
+
+    public BallView(Context context, GameController gameController) {
         super(context);
-        mBall = ball;
-        mRec = rec;
+        mGameController = gameController;
     }
 
     @Override
@@ -31,17 +32,21 @@ public class BallView extends View {
         super.onDraw(canvas);
         canvasHeight = canvas.getHeight();
         canvasWidth = canvas.getWidth();
-        mBall.setBounds(canvasWidth, canvasHeight, mRec);
-        int x = mBall.getX();
-        int y = mBall.getY();
         Paint paint = new Paint();
         paint.setColor(Color.BLACK);
-        canvas.drawText("X rate of change: " + mBall.getXROC() + "\nY rate of change: " + mBall.getYROC(), 10, 10, paint);
-        canvas.drawBitmap(mBall.getImage(), x, y, new Paint());
-        canvas.drawRect(mRec,paint);
-        if(!mBall.isBroken()) {
-            invalidate();
-        }
+        setHomeBall(mGameController.getHomeBallX(), mGameController.getHomeBallY());
+        canvas.drawBitmap(mGameController.getHomeBallImage(), homeBallX, homeBallY, new Paint());
+        invalidate();
+    }
+
+    public float[] getBounds() {
+        float[] bounds = new float[]{canvasHeight, canvasWidth};
+        return bounds;
+    }
+
+    private void setHomeBall(int x, int y) {
+        homeBallX = x;
+        homeBallY = y;
     }
 
 }

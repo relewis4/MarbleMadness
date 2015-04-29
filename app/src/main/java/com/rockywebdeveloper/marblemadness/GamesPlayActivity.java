@@ -2,6 +2,7 @@ package com.rockywebdeveloper.marblemadness;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.graphics.BitmapFactory;
 import android.graphics.RectF;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -14,19 +15,18 @@ import android.widget.ImageView;
 
 
 public class GamesPlayActivity extends Activity{
-    private BallView mBallView;
-    private Ball mBall;
-    private RectF rec;
+    private GameController mGameController;
+    private BallView view;
 
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBall = new Ball(100,100,this);
-        rec = new RectF(1000,400,1100,1000);
-        mBallView = new BallView(GamesPlayActivity.this,mBall,rec);
-        setContentView(mBallView);
+        mGameController = new GameController(300, 300, this);
+        mGameController.setHomeBallImage(BitmapFactory.decodeResource(getResources(), R.drawable.ball1));
+        view = new BallView(this, mGameController);
+        setContentView(view);
         View decorView = getWindow().getDecorView();
         // Hide the status bar.
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
@@ -37,13 +37,13 @@ public class GamesPlayActivity extends Activity{
     @Override
     public void onResume(){
         super.onResume();
-        mBall.onResume();
+        mGameController.onResume();
     }
 
     @Override
     public void onPause(){
         super.onPause();
-        mBall.onPause();
+        mGameController.onPause();
     }
 
 }

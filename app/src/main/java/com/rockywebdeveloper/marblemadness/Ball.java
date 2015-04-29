@@ -9,6 +9,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.support.v7.internal.app.WindowDecorActionBar;
 
 /**
  * Created by relewis on 4/7/2015.
@@ -25,19 +26,15 @@ public class Ball implements SensorEventListener {
     private float yROC;
     private int ballHeight;
     private int ballWidtht;
-    private int canvasHeight;
-    private int canvasWidtht;
     private SensorManager mSensorManager;
     private Sensor mMagSensor;
     private Sensor mAccelSensor;
     private float[] mGravity;
     private float[] mGeomagnetic;
-    private Boolean x_block = false;
-    private Boolean y_block = false;
     private Boolean firstTime = true;
     private Context mContext;
     private Boolean broken;
-    private RectF mRectF;
+
 
     public Ball(int x, int y, Context context){
         ball = BitmapFactory.decodeResource(context.getResources(), R.drawable.ball1);
@@ -54,73 +51,44 @@ public class Ball implements SensorEventListener {
         mMagSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
     }
 
-    public void setXandY(float newX, float newY) {
-        if (y - (newY * 50) <= 0) {
-            y = 0;
-            if(yROC > .5){
-                setImage();
-            }
-        } else if(y - (newY * 50) >= (canvasHeight - ballHeight)) {
-           y = canvasHeight - ballHeight;
-            if(yROC > .5){
-                setImage();
-            }
-        } else if(onWall(x+ballWidtht - (newX*50),y-ballHeight - (newY*50))){
-
-        } else {
-            y = (int) (y - (newY * 50));
-        }
-        if (x - (newX * 50) <= 0) {
-            x = 0;
-            if (xROC > 1) {
-                setImage();
-            }
-        } else if (x - (newX * 50) >= (canvasWidtht - ballWidtht)) {
-            x = canvasWidtht - ballWidtht;
-            if (xROC > 1) {
-                setImage();
-            }
-        } else if(onWall(x+ballWidtht - (newX*50),y+ballHeight - (newY*50))){
-
-        }else {
-            x = (int) (x - (newX * 50));
-        }
+    public void setImage(Bitmap image) {
+        ball = image;
     }
+
+    private void setXandY(float newX, float newY) {
+        y = (int) (y - (newY * 50));
+        x = (int) (x - (newX * 50));
+    }
+
     public Boolean isBroken(){
         return broken;
     }
-    private void setImage(){
-        ball = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.brokenball1);
-        broken = true;
-    }
+
     public Bitmap getImage(){
         return ball;
     }
+
     public int getX(){
         return x;
     }
+
     public int getY() {
         return y;
     }
+
     public int getBallHeight(){
         return ballHeight;
     }
+
     public int getBallWidtht(){
         return ballWidtht;
     }
-    public void setBounds(int width, int height, RectF rec){
-        canvasWidtht = width;
-        canvasHeight = height;
-        mRectF = rec;
-    }
 
-    public boolean onWall(float x, float y){
-        return mRectF.contains(x,y);
-    }
-    public float getXROC (){
+    public float getxROC() {
         return xROC;
     }
-    public float getYROC (){
+
+    public float getyROC() {
         return yROC;
     }
 
@@ -156,8 +124,6 @@ public class Ball implements SensorEventListener {
             }
         }
     }
-
-
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
