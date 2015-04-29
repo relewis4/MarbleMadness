@@ -1,20 +1,19 @@
 package com.rockywebdeveloper.marblemadness;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainMenuActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_menu_main);
     }
 
 
@@ -40,13 +39,15 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void onClick(View v){
-        EditText usernameEditText = (EditText) findViewById(R.id.username);
-
-        ((Globals) this.getApplication()).setUsername(usernameEditText.getText().toString());
-
-        startActivity(new Intent(this, MainMenuActivity.class));
+    public void handleSinglePlayerClick(View v){
+        //insert code to start single player activity
     }
 
+    public void handleMultiplayerClick(View v){
+        startActivity(new Intent(this, PeerListActivity.class));
+    }
 
+    public void handleHighScoresClick(View v){
+        //insert code to start high scores activity
+    }
 }
