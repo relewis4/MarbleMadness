@@ -37,6 +37,9 @@ public class ClientAsyncTask extends AsyncTask<Integer, String, Void> {
              * get X,Y coordinates of Server player
              */
 
+            /*
+             * use gamecontroller to get x and y constantly while(gameInProgress)
+             */
             client.close();
         } catch (IOException e){
             publishProgress(e.getMessage());

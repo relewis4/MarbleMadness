@@ -1,6 +1,7 @@
 package com.rockywebdeveloper.marblemadness;
 
 import android.app.Activity;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,16 +12,18 @@ import android.view.WindowManager;
 
 public class TwoPlayerActivity extends Activity {
 
-    TwoPlayerView tpView;
-
+    private GameController mGameController;
+    private BallView view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        tpView = new TwoPlayerView(this);
-        tpView.setBackgroundColor(Color.BLACK);
-        setContentView(tpView);
+        mGameController = new GameController(300, 300, 900, 900,this);
+        mGameController.setHomeBallImage(BitmapFactory.decodeResource(getResources(), R.drawable.ball1));
+        mGameController.setAwayBallImage(BitmapFactory.decodeResource(getResources(), R.drawable.ball2));
+        view = new BallView(this, mGameController);
+        setContentView(view);
 
         View decorView = getWindow().getDecorView();
         // Hide the status bar.

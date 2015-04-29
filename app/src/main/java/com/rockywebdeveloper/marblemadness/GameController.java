@@ -26,6 +26,8 @@ public class GameController {
     private long updatedTime = 0L;
     private String timerValue;
 
+    private boolean gameInProgress;
+
     public  GameController(int homeBallX, int homeBallY, Context context){
         walls = new ArrayList();
         homeBall = new Ball(homeBallX, homeBallY, context);
@@ -168,5 +170,13 @@ public class GameController {
     public void onPause(){
         homeBall.onPause();
         awayBall.onPause();
+    }
+
+    public boolean isGameInProgress() {
+        return gameInProgress;
+    }
+
+    public void setGameInProgress(boolean gameInProgress) {
+        this.gameInProgress = gameInProgress;
     }
 }
