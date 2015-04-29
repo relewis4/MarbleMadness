@@ -34,7 +34,9 @@ public class ServerAsyncTask extends AsyncTask<Integer, String, Void> {
             publishProgress("Connected to Client");
 
             while(client.isConnected()){
-                //get X,Y data from Rocky's Controller class
+            /*
+             * use gamecontroller to get x and y constantly while(gameInProgress)
+             */
             }
         } catch (IOException e){
             e.printStackTrace();
