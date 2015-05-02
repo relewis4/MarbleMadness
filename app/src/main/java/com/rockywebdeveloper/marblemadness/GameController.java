@@ -18,6 +18,8 @@ public class GameController {
     private Ball homeBall;
     private AwayBall awayBall;
     private float[] gameBounds;
+    private float mCanvasHeight;
+    private float mCanvasWidth;
 
     private Handler customHandler = new Handler();
     private long startTime = 0L;
@@ -25,19 +27,20 @@ public class GameController {
     private long timeSwapBuff = 0L;
     private long updatedTime = 0L;
     private String timerValue;
-
     private boolean gameInProgress;
+    private boolean twoPlayerGame;
 
     public  GameController(int homeBallX, int homeBallY, Context context){
         walls = new ArrayList();
         homeBall = new Ball(homeBallX, homeBallY, context);
+        twoPlayerGame = false;
     }
 
     public GameController(int homeBallX, int homeBallY, int awayBallX, int awayBallY, Context context) {
         walls = new ArrayList();
         homeBall = new Ball(homeBallX, homeBallY, context);
         awayBall = new AwayBall(awayBallX, awayBallY, context);
-        //gameBounds = new float[]{circle.height(), circle.width()};
+        twoPlayerGame = true;
     }
 
     public void addWall(RectF wall) {
@@ -64,72 +67,78 @@ public class GameController {
         return awayBall.getImage();
     }
 
+    public void setBounds(float canvasHeight, float canvasWidth) {
+        mCanvasHeight = canvasHeight;
+        mCanvasWidth = canvasWidth;
+    }
+
+    public void setGameBounds(float top, float bottom, float left, float right){
+        gameBounds = new float[]{top,bottom,left,right};
+    }
+
     public int getHomeBallX() {
-        return homeBall.getX();
-       /* if (x - (newX * 50) <= 0) {
+        int x = homeBall.getX();
+        if (x <= 0) {
             x = 0;
-            if (xROC > 1) {
-                setImage();
-            }
-        } else if (x - (newX * 50) >= (canvasWidtht - ballWidtht)) {
-            x = canvasWidtht - ballWidtht;
-            if (xROC > 1) {
-                setImage();
-            }
-        } else {
-            x = (int) (x - (newX * 50));
-        }*/
+            //if (xROC > 1) {
+                //setImage();
+            //}
+        } else if (x >= (mCanvasWidth - homeBall.getBallWidtht())) {
+            x = (int) mCanvasWidth - homeBall.getBallWidtht();
+            //if (xROC > 1) {
+                //setImage();
+            //}
+        }
+
+        return x;
     }
 
     public int getHomeBallY() {
-        return homeBall.getY();
-        /*  if (y - (newY * 50) <= 0) {
+        int y = homeBall.getY();
+          if (y <= 0) {
             y = 0;
-            if(yROC > .5){
-                setImage();
-            }
-        } else if(y - (newY * 50) >= (canvasHeight - ballHeight)) {
-            y = canvasHeight - ballHeight;
-            if(yROC > .5){
-                setImage();
-            }
-        } else {
-            y = (int) (y - (newY * 50));
-        }*/
+            //if(yROC > .5){
+                //setImage();
+            //}
+        } else if(y  >= (mCanvasHeight - homeBall.getBallHeight())) {
+            y = (int) mCanvasHeight - homeBall.getBallHeight();
+            //if(yROC > .5){
+                //setImage();
+            //}
+        }
+        return y;
     }
 
     public int getAwayBallX() {
-        return awayBall.getX();
-       /* if (x - (newX * 50) <= 0) {
+        int x = awayBall.getX();
+        if (x <= 0) {
             x = 0;
-            if (xROC > 1) {
-                setImage();
-            }
-        } else if (x - (newX * 50) >= (canvasWidtht - ballWidtht)) {
-            x = canvasWidtht - ballWidtht;
-            if (xROC > 1) {
-                setImage();
-            }
-        } else {
-            x = (int) (x - (newX * 50));
-        }*/
+            //if (xROC > 1) {
+                //setImage();
+            //}
+        } else if (x  >= (mCanvasWidth - awayBall.getBallWidtht())) {
+            x = (int) mCanvasWidth - awayBall.getBallWidtht();
+            //if (xROC > 1) {
+                //setImage();
+            //}
+        }
+        return x;
     }
 
     public int getAwayBallY() {
-        return awayBall.getY();
-        /*  if (y - (newY * 50) <= 0) {
+        int y = awayBall.getY();
+        if (y <= 0) {
             y = 0;
-            if(yROC > .5){
-                setImage();
-            }
-        } else if(y - (newY * 50) >= (canvasHeight - ballHeight)) {
-            y = canvasHeight - ballHeight;
-            if(yROC > .5){
-                setImage();
-            }
-        } else {
-            y = (int) (y - (newY * 50));
-        }*/
+            //if(yROC > .5){
+                //setImage();
+            //}
+        } else if(y >= (mCanvasHeight - awayBall.getBallHeight())) {
+            y = (int) mCanvasHeight - awayBall.getBallHeight();
+            //if (yROC > .5) {
+                //setImage();
+            //}
+        }
+        return y;
     }
 
     public void startTimer() {
@@ -164,12 +173,16 @@ public class GameController {
 
     public void onResume(){
         homeBall.onResume();
-        awayBall.onResume();
+        if(twoPlayerGame) {
+            awayBall.onResume();
+        }
     }
 
     public void onPause(){
         homeBall.onPause();
-        awayBall.onPause();
+        if(twoPlayerGame) {
+            awayBall.onPause();
+        }
     }
 
     public boolean isGameInProgress() {

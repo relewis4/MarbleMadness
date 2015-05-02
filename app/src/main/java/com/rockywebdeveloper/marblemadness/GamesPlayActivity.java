@@ -1,18 +1,10 @@
 package com.rockywebdeveloper.marblemadness;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.graphics.BitmapFactory;
-import android.graphics.RectF;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.ImageView;
-
 
 public class GamesPlayActivity extends Activity{
     private GameController mGameController;
