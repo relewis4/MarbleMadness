@@ -70,11 +70,6 @@ public class SinglePlayerView extends View {
 
     }
 
-    public float[] getBounds() {
-        float[] bounds = new float[]{canvasHeight, canvasWidth};
-        return bounds;
-    }
-
     private void setHomeBall(int x, int y) {
         homeBallX = x;
         homeBallY = y;
