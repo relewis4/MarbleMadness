@@ -26,7 +26,7 @@ public class AwayBall {
     private Boolean broken;
 
 
-    public AwayBall(int x, int y, Context context){
+    public AwayBall(int x, int y, Context context) {
         mContext = context;
         broken = false;
         this.x = x;
@@ -76,4 +76,11 @@ public class AwayBall {
         return yROC;
     }
 
+    public void onResume() {
+
+    }
+
+    public void onPause() {
+
+    }
 }

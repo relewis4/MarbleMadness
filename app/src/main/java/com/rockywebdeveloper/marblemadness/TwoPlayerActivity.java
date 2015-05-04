@@ -1,20 +1,18 @@
 package com.rockywebdeveloper.marblemadness;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.net.wifi.p2p.WifiP2pInfo;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.graphics.Color;
 import android.view.View;
 import android.view.WindowManager;
-
 
 public class TwoPlayerActivity extends Activity {
 
     private GameController mGameController;
-    private BallView view;
-
+    private TwoPlayerView view;
+    private final int PORT = 1234;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,8 +20,20 @@ public class TwoPlayerActivity extends Activity {
         mGameController = new GameController(300, 300, 900, 900,this);
         mGameController.setHomeBallImage(BitmapFactory.decodeResource(getResources(), R.drawable.ball1));
         mGameController.setAwayBallImage(BitmapFactory.decodeResource(getResources(), R.drawable.ball2));
-        view = new BallView(this, mGameController);
+        view = new TwoPlayerView(this, mGameController);
         setContentView(view);
+        Intent intent = this.getIntent();
+        Bundle bundle = intent.getExtras();
+
+        WifiP2pInfo info = bundle.getParcelable("Info");
+
+        if(info.isGroupOwner){
+            ServerAsyncTask serverAsyncTask = new ServerAsyncTask(getApplicationContext(), mGameController);
+            serverAsyncTask.execute(PORT);
+        } else {
+            ClientAsyncTask clientAsyncTask = new ClientAsyncTask(getApplicationContext(), info.groupOwnerAddress, mGameController);
+            clientAsyncTask.execute(PORT);
+        }
 
         View decorView = getWindow().getDecorView();
         // Hide the status bar.
@@ -32,28 +42,16 @@ public class TwoPlayerActivity extends Activity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
-
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+    public void onResume(){
+        super.onResume();
+        mGameController.onResume();
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-
+    public void onPause(){
+        super.onPause();
+        mGameController.onPause();
     }
 
 }
