@@ -17,9 +17,7 @@ public class TwoPlayerActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mGameController = new GameController(300, 300, 900, 900,this);
-        mGameController.setHomeBallImage(BitmapFactory.decodeResource(getResources(), R.drawable.ball1));
-        mGameController.setAwayBallImage(BitmapFactory.decodeResource(getResources(), R.drawable.ball2));
+        mGameController = new GameController(300, 300, 900, 900, BitmapFactory.decodeResource(getResources(), R.drawable.ball1), BitmapFactory.decodeResource(getResources(), R.drawable.ball2),this);
         view = new TwoPlayerView(this, mGameController);
         setContentView(view);
         Intent intent = this.getIntent();

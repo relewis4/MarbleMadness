@@ -15,8 +15,7 @@ public class SinglePlayerActivity extends Activity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mGameController = new GameController(300, 300, this);
-        mGameController.setHomeBallImage(BitmapFactory.decodeResource(getResources(), R.drawable.ball1));
+        mGameController = new GameController(300, 300, BitmapFactory.decodeResource(getResources(), R.drawable.ball1),this);
         view = new SinglePlayerView(this, mGameController);
         setContentView(view);
         View decorView = getWindow().getDecorView();
