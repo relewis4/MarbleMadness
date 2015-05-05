@@ -83,8 +83,8 @@ public class GameController {
             //if (xROC > 1) {
                 //setImage();
             //}
-        } else if (x >= (mCanvasWidth - homeBall.getBallWidtht())) {
-            x = (int) mCanvasWidth - homeBall.getBallWidtht();
+        } else if (x >= (mCanvasWidth - homeBall.getBallWidth())) {
+            x = (int) mCanvasWidth - homeBall.getBallWidth();
             //if (xROC > 1) {
                 //setImage();
             //}

@@ -40,7 +40,7 @@ public class MainMenuActivity extends ActionBarActivity {
     }
 
     public void handleSinglePlayerClick(View v){
-        //insert code to start single player activity
+        startActivity(new Intent(this, SinglePlayerActivity.class));
     }
 
     public void handleMultiplayerClick(View v){

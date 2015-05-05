@@ -18,7 +18,7 @@ public class ClientAsyncTask extends AsyncTask<Integer, String, Void> {
     private InetAddress host;
     private Context context;
 
-    public ClientAsyncTask(Context context, InetAddress host){
+    public ClientAsyncTask(Context context, InetAddress host, GameController gameController){
         this.context = context;
         this.host = host;
     }

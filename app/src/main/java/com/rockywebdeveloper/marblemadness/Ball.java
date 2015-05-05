@@ -25,7 +25,7 @@ public class Ball implements SensorEventListener {
     private float xROC;
     private float yROC;
     private int ballHeight;
-    private int ballWidtht;
+    private int ballWidth;
     private SensorManager mSensorManager;
     private Sensor mMagSensor;
     private Sensor mAccelSensor;
@@ -38,8 +38,6 @@ public class Ball implements SensorEventListener {
 
     public Ball(int x, int y, Context context){
         mContext = context;
-        ballHeight = ball.getHeight();
-        ballWidtht = ball.getWidth();
         broken = false;
         this.x = x;
         this.y = y;
@@ -52,6 +50,8 @@ public class Ball implements SensorEventListener {
 
     public void setImage(Bitmap image) {
         ball = image;
+        setBallHeight(ball.getHeight());
+        setBallWidth(ball.getWidth());
     }
 
     private void setXandY(float newX, float newY) {
@@ -79,8 +79,16 @@ public class Ball implements SensorEventListener {
         return ballHeight;
     }
 
-    public int getBallWidtht(){
-        return ballWidtht;
+    public int getBallWidth(){
+        return ballWidth;
+    }
+
+    public void setBallHeight(int ballHeight) {
+        this.ballHeight = ballHeight;
+    }
+
+    public void setBallWidth(int ballWidth) {
+        this.ballWidth = ballWidth;
     }
 
     public float getxROC() {

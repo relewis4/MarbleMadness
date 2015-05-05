@@ -77,13 +77,13 @@ public class PeerListActivity extends WifiP2pActivity {
                     clientAsyncTask.execute(port);
                }
              */
-            Intent intent = new Intent(this, ConnectedActivity.class);
+           /* Intent intent = new Intent(this, ConnectedActivity.class);
             Bundle bundle = new Bundle();
 
             bundle.putParcelable("Info", info);
 
             intent.putExtras(bundle);
-            startActivity(intent);
+            startActivity(intent);*/
         }
     }
 

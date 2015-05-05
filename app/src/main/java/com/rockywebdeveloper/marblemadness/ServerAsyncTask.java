@@ -18,7 +18,7 @@ public class ServerAsyncTask extends AsyncTask<Integer, String, Void> {
     private int port;
     private Context context;
 
-    public ServerAsyncTask(Context context){
+    public ServerAsyncTask(Context context, GameController gameController){
         this.context = context;
     }
 

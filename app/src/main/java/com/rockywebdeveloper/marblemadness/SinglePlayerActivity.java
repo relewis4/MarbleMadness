@@ -6,19 +6,18 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 
-public class GamesPlayActivity extends Activity{
+public class SinglePlayerActivity extends Activity{
     private GameController mGameController;
-    private BallView view;
+    private SinglePlayerView view;
 
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mGameController = new GameController(300, 300, 900, 900,this);
+        mGameController = new GameController(300, 300, this);
         mGameController.setHomeBallImage(BitmapFactory.decodeResource(getResources(), R.drawable.ball1));
-        mGameController.setAwayBallImage(BitmapFactory.decodeResource(getResources(), R.drawable.ball2));
-        view = new BallView(this, mGameController);
+        view = new SinglePlayerView(this, mGameController);
         setContentView(view);
         View decorView = getWindow().getDecorView();
         // Hide the status bar.
