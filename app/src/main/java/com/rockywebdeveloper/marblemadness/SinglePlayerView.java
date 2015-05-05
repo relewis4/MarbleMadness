@@ -21,6 +21,8 @@ public class SinglePlayerView extends View {
     private float bottom;
     private float left;
     private float right;
+    private float heightIndex;
+    private float widthIndex;
 
     public SinglePlayerView(Context context, GameController gameController) {
         super(context);
@@ -31,47 +33,56 @@ public class SinglePlayerView extends View {
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         Paint sPaint = new Paint();
-            canvasHeight = canvas.getHeight();
-            canvasWidth = canvas.getWidth();
-            mGameController.setBounds(canvasHeight,canvasWidth);
+        canvasHeight = canvas.getHeight();
+        canvasWidth = canvas.getWidth();
+        mGameController.setBounds(canvasHeight,canvasWidth);
 
-            top = 510;
-            left = 0;
-            right = 980;
-            bottom = 540;
-            sPaint.setColor(Color.BLACK);
-            canvas.drawRect(left, top, right, bottom, sPaint);
-            mGameController.addWall(new RectF(left, top, right, bottom));
+        heightIndex = canvasHeight / 3;
+        widthIndex = canvasWidth / 4;
 
-            top = 250;
-            left = 400;
-            right = 1200;
-            bottom = 280;
-            canvas.drawRect(left, top, right, bottom, sPaint);
-            mGameController.addWall(new RectF(left, top, right, bottom));
+        top = heightIndex * 2;
+        left = 0;
+        right = widthIndex * 3;
+        bottom = top + 30;
+        sPaint.setColor(Color.BLACK);
+        canvas.drawRect(left, top, right, bottom, sPaint);
+        mGameController.addWall(new RectF(left, top, right, bottom));
 
-            top = 250;
-            left = 100;
-            right = 120;
-            bottom = 510;
-            canvas.drawRect(left, top, right, bottom, sPaint);
-            mGameController.addWall(new RectF(left, top, right, bottom));
+        top = heightIndex;
+        left = widthIndex;
+        right = canvasWidth;
+        bottom = top + 30;
+        canvas.drawRect(left, top, right, bottom, sPaint);
+        mGameController.addWall(new RectF(left, top, right, bottom));
 
-            top = 0;
-            left = 900;
-            right = 920;
-            bottom = 250;
-            canvas.drawRect(left, top, right, bottom, sPaint);
-            mGameController.addWall(new RectF(left, top, right, bottom));
+        top = heightIndex;
+        left = widthIndex / 3;
+        right = left + 30;
+        bottom = heightIndex * 2;
+        canvas.drawRect(left, top, right, bottom, sPaint);
+        mGameController.addWall(new RectF(left, top, right, bottom));
 
-            top = 250;
-            left = 0;
-            right = 120;
-            bottom = 280;
-            sPaint.setColor(Color.RED);
-            canvas.drawRect(left, top, right, bottom, sPaint);
-            mGameController.addWall(new RectF(left, top, right, bottom));
+        top = 0;
+        left = widthIndex * 3;
+        right = left + 30;
+        bottom = heightIndex;
+        canvas.drawRect(left, top, right, bottom, sPaint);
+        mGameController.addWall(new RectF(left, top, right, bottom));
 
+        top = heightIndex;
+        left = 0;
+        right = widthIndex / 3;
+        bottom = top + 30;
+        sPaint.setColor(Color.RED);
+        canvas.drawRect(left, top, right, bottom, sPaint);
+        mGameController.addWall(new RectF(left, top, right, bottom));
+
+        top = 0;
+        left = 0;
+        right = widthIndex / 3;
+        bottom = top + 30;
+        canvas.drawRect(left, top, right, bottom, sPaint);
+        mGameController.addWall(new RectF(left, top, right, bottom));
 
         setHomeBall(mGameController.getHomeBallX(), mGameController.getHomeBallY());
         canvas.drawBitmap(mGameController.getHomeBallImage(), homeBallX, homeBallY, new Paint());
