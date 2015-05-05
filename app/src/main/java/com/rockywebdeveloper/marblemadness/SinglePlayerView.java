@@ -19,8 +19,8 @@ public class SinglePlayerView extends View {
     private float bottom;
     private float left;
     private float right;
-    private float heightIndexer;
-    private float widthIndexer;
+    private float heightIndex;
+    private float widthIndex;
 
 
     public SinglePlayerView(Context context, GameController gameController) {
@@ -37,43 +37,43 @@ public class SinglePlayerView extends View {
         setHomeBall(mGameController.getHomeBallX(), mGameController.getHomeBallY());
         canvas.drawBitmap(mGameController.getHomeBallImage(), homeBallX, homeBallY, new Paint());
 
-        heightIndexer = canvasHeight / 3;
-        widthIndexer = canvasWidth / 4;
-        top = heightIndexer * 2;
+        heightIndex = canvasHeight / 3;
+        widthIndex = canvasWidth / 4;
+        top = heightIndex * 2;
         left = 0;
-        right = widthIndexer * 3;
+        right = widthIndex * 3;
         bottom = top + 30;
         sPaint.setColor(Color.BLACK);
         canvas.drawRect(left, top, right , bottom, sPaint);
 
-        top = heightIndexer;
-        left = widthIndexer;
+        top = heightIndex;
+        left = widthIndex;
         right = canvasWidth;
         bottom = top + 30;
         canvas.drawRect(left, top, right, bottom, sPaint);
 
-        top = heightIndexer;
-        left = widthIndexer / 3;
+        top = heightIndex;
+        left = widthIndex / 3;
         right = left + 30;
-        bottom = heightIndexer * 2;
+        bottom = heightIndex * 2;
         canvas.drawRect(left, top, right, bottom, sPaint);
 
         top = 0;
-        left = widthIndexer * 3;
+        left = widthIndex * 3;
         right = left + 30;
-        bottom = heightIndexer;
+        bottom = heightIndex;
         canvas.drawRect(left, top, right, bottom, sPaint);
 
-        top = heightIndexer;
+        top = heightIndex;
         left = 0;
-        right = widthIndexer / 3;
+        right = widthIndex / 3;
         bottom = top + 30;
         sPaint.setColor(Color.RED);
         canvas.drawRect(left, top, right, bottom, sPaint);
 
         top = 0;
         left = 0;
-        right = widthIndexer / 3;
+        right = widthIndex / 3;
         bottom = top + 30;
         sPaint.setColor(Color.RED);
         canvas.drawRect(left, top, right, bottom, sPaint);
