@@ -40,28 +40,40 @@ public class SinglePlayerView extends View {
         heightIndex = canvasHeight / 3;
         widthIndex = canvasWidth / 4;
 
+        //horizontal bottom line
         top = heightIndex * 2;
-        left = 0;
+        left = widthIndex + heightIndex;
         right = widthIndex * 3;
         bottom = top + 30;
         sPaint.setColor(Color.BLACK);
         canvas.drawRect(left, top, right, bottom, sPaint);
         mGameController.addWall(new RectF(left, top, right, bottom));
 
+        //horizontal top line left
         top = heightIndex;
-        left = widthIndex;
-        right = canvasWidth;
+        left = widthIndex / 3;
+        right = widthIndex * 2;
         bottom = top + 30;
         canvas.drawRect(left, top, right, bottom, sPaint);
         mGameController.addWall(new RectF(left, top, right, bottom));
 
+        //horizontal top line right
         top = heightIndex;
-        left = widthIndex / 3;
-        right = left + 30;
-        bottom = heightIndex * 2;
+        left = widthIndex * 2 + top;
+        right = widthIndex * 3 + top /2;
+        bottom = top + 30;
         canvas.drawRect(left, top, right, bottom, sPaint);
         mGameController.addWall(new RectF(left, top, right, bottom));
 
+        //vertical line first
+        top = heightIndex;
+        left = widthIndex / 3 + top /2;
+        right = left + 30;
+        bottom = heightIndex * 2 +30;
+        canvas.drawRect(left, top, right, bottom, sPaint);
+        mGameController.addWall(new RectF(left, top, right, bottom));
+
+        //vertical line top
         top = 0;
         left = widthIndex * 3;
         right = left + 30;
@@ -69,6 +81,15 @@ public class SinglePlayerView extends View {
         canvas.drawRect(left, top, right, bottom, sPaint);
         mGameController.addWall(new RectF(left, top, right, bottom));
 
+        //vertical line rightmost
+        top = heightIndex * 2;
+        left = widthIndex * 3;
+        right = left + 30;
+        bottom = canvasHeight;
+        canvas.drawRect(left, top, right, bottom, sPaint);
+        mGameController.addWall(new RectF(left, top, right, bottom));
+
+        //finish line bottom
         top = heightIndex;
         left = 0;
         right = widthIndex / 3;
@@ -77,6 +98,7 @@ public class SinglePlayerView extends View {
         canvas.drawRect(left, top, right, bottom, sPaint);
         mGameController.addWall(new RectF(left, top, right, bottom));
 
+        //finish line top
         top = 0;
         left = 0;
         right = widthIndex / 3;
