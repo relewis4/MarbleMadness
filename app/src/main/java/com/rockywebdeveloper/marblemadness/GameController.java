@@ -38,6 +38,7 @@ public class GameController implements SensorEventListener {
     private float[] gameBounds;
     private float mCanvasHeight;
     private float mCanvasWidth;
+    private int counter = 0;
 
     private Handler customHandler = new Handler();
     private long startTime = 0L;
@@ -114,53 +115,40 @@ public class GameController implements SensorEventListener {
         return awayBall.getY();
     }
 
-    private boolean isOnWallX(float newX, float newY) {
-        for (float[] rect : walls) {
-            if (newX < rect[2] && newX > rect[0] && ((newY < rect[3] && newY > rect[1]) ||
-                  (newY + homeBall.getBallHeight() > rect[1] && newY + homeBall.getBallHeight() < rect[3]))) {
+    private boolean isOnWall(float newX, float newY) {
 
-                x = (int) rect[2];
-                return true;
-            } else if (newX + homeBall.getBallWidth() > rect[0] && newX + homeBall.getBallWidth() > rect[2]
-                    && ((newY < rect[3] && newY > rect[1]) ||
-                    (newY + homeBall.getBallHeight() > rect[1] && newY + homeBall.getBallHeight() < rect[3]))) {
-                x = (int) rect[0] - homeBall.getBallWidth();
-                return true;
-            }else if(newY < rect[1] && newY + homeBall.getBallHeight() > rect[3] && newX + homeBall.getBallWidth() > rect[0] && newX + homeBall.getBallWidth() < rect[2]){
-                x = (int) rect[0]- homeBall.getBallWidth();
-                return true;
-            }else if(newY < rect[1] && newY +homeBall.getBallHeight() > rect[3] && newX  < rect[2] && newX > rect[0]){
-                x = (int) rect[2];
-                return true;
+            RectF rect;
+            RectF ballRect = new RectF(newX, newY, newX + homeBall.getBallWidth(), newY + homeBall.getBallHeight());
+            for (float[] wall : walls) {
+                rect = new RectF(wall[0], wall[1], wall[2], wall[3]);
+                if(ballRect.intersect(rect)){
+                    for (int i = (int) newX; i < newX + homeBall.getBallWidth(); i ++) {
+                        if (rect.contains(i, newY)) {
+                            x = (int) newX;
+                            //y = (int) newY;
+
+                            return true;
+                        } else if (rect.contains(i, newY + homeBall.getBallHeight())) {
+                            x = (int) newX;
+                            //y = (int) newY;
+                            return true;
+                        }
+                    }
+                    for (int i = (int) newY; i < newY + homeBall.getBallHeight(); i++) {
+                        if (rect.contains(newX, i)) {
+                            //x = (int) newX;
+                            y = (int) newY;
+                            return true;
+                        } else if (rect.contains(newX + homeBall.getBallWidth(), i)) {
+                            //x = (int) newX;
+                            y = (int) newY;
+                            return true;
+                        }
+                    }
+                }
+
             }
 
-        }
-            return false;
-        }
-
-
-    private boolean isOnWallY(float newX, float newY){
-        //rect[0] = left
-        //rect[1] = top
-        //rect[2] = right
-        //rect[3] = bottom
-       /*for (float[] rect : walls) {
-        if(newY < rect[3] && newY > rect[1] && ((newX > rect[0] && newX < rect[2]) ||
-                (newX + homeBall.getBallWidth() > rect[0] && newX + homeBall.getBallWidth() < rect[2]))){
-            y = (int) rect[3];
-            return true;
-        } else if (newY + homeBall.getBallHeight() > rect[1] && newY + homeBall.getBallHeight() < rect[3]  && ((newX > rect[0] && newX < rect[2]) ||
-             (newX + homeBall.getBallWidth() > rect[0] && newX + homeBall.getBallWidth() < rect[2]))){
-            y = (int) rect[1] - homeBall.getBallHeight();
-            return true;
-        }else if(newX < rect[0] && newX +homeBall.getBallWidth() > rect[2] && newY +homeBall.getBallHeight() > rect[1] && newY + homeBall.getBallHeight() < rect[3]){
-            y = (int) rect[1] - homeBall.getBallHeight();
-            return true;
-        }else if(newX < rect[0] && newX +homeBall.getBallWidth() > rect[2] && newY < rect[3] && newY > rect[1]){
-            y = (int) rect[3];
-            return true;
-        }
-    }*/
         return false;
     }
 
@@ -233,39 +221,56 @@ public class GameController implements SensorEventListener {
     private void setXandY(float newX, float newY) {
         int tempY = (int) (y - (newY * 50));
         int tempX = (int) (x - (newX * 50));
-        if (tempY <= 0) {
-            y = 0;
-            //if(yROC > .5){
-            //setImage();
-            //}
-        } else if (tempY >= (mCanvasHeight - homeBall.getBallHeight())) {
-            y = (int) mCanvasHeight - homeBall.getBallHeight();
-            //if(yROC > .5){
-            //setImage();
-            //}
-        } else if (isOnWallY(tempX, tempY)) {
-
-
-
-        } else {
-            y = tempY;
-        }
-        if (tempX <= 0) {
-            x = 0;
-            //if (xROC > 1) {
-            //setImage();
-            //}
-        } else if (tempX >= (mCanvasWidth - homeBall.getBallWidth())) {
-            x = (int) mCanvasWidth - homeBall.getBallWidth();
-            //if (xROC > 1) {
-            //setImage();
-            //}
-        } else if (isOnWallX(tempX, tempY)){
-
-
-
-         }else {
+        if( tempY <= 0 || tempX <= 0) {
+            if(tempY <= 0){
+                y = 0;
+            }
+            if(tempX <= 0){
+                x = 0;
+            }
+        }else if (tempY >= (mCanvasHeight - homeBall.getBallHeight()) || tempX >= (mCanvasWidth - homeBall.getBallWidth())) {
+            if(tempX >= (mCanvasWidth - homeBall.getBallWidth())){
+                x = (int) mCanvasWidth - homeBall.getBallWidth();
+            }
+            if(tempY >= (mCanvasHeight - homeBall.getBallHeight())){
+                y = (int) mCanvasHeight - homeBall.getBallHeight();
+            }
+        } else if(isOnWall(tempX, tempY)){
+            /*float left, right, bottom, top;
+            int ballHeight = homeBall.getBallHeight();
+            int ballWidth = homeBall.getBallWidth();
+            for (float[] rect : walls) {
+                left = rect[0];
+                right = rect[2];
+                top = rect[1];
+                bottom = rect[3];
+                if(newY + ballHeight >= top && newX >= left && newX + ballWidth <= right){
+                    x = (int)right;
+                    return true;
+                } else if(newX + ballWidth >= left && newY >= top && newY + ballHeight <= bottom) {
+                    x = (int) left - ballWidth;
+                    return true;
+                }
+            }
+            float left, right, bottom, top;
+            int ballHeight = homeBall.getBallHeight();
+            int ballWidth = homeBall.getBallWidth();
+            for (float[] rect : walls) {
+                left = rect[0];
+                right = rect[2];
+                top = rect[1];
+                bottom = rect[3];
+                if(newX <= right && newY >= top && newY + ballHeight <= bottom){
+                    x = (int)right;
+                    return true;
+                } else if(newX + ballWidth >= left && newY >= top && newY + ballHeight <= bottom) {
+                    x = (int) left - ballWidth;
+                    return true;
+                }
+            }*/
+        }else {
             x = tempX;
+            y = tempY;
         }
         homeBall.setXandY(x,y);
     }
