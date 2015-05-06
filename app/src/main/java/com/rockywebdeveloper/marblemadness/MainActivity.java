@@ -1,20 +1,32 @@
 package com.rockywebdeveloper.marblemadness;
 
+import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.IOException;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends Activity {
+
+    private String fileName;
+    static final  int READ_BLOCK_SIZE = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        fileName = "userName.txt";
     }
 
 
@@ -42,8 +54,56 @@ public class MainActivity extends ActionBarActivity {
 
     public void onClick(View v){
         EditText usernameEditText = (EditText) findViewById(R.id.username);
+        String str = usernameEditText.getText().toString();
 
-        ((Globals) this.getApplication()).setUsername(usernameEditText.getText().toString());
+        try{
+            FileOutputStream fOut;
+            File file = new File(getFilesDir(), fileName);
+
+
+
+           if(file.exists()){
+                FileInputStream fIn;
+                fIn = openFileInput(fileName);
+                InputStreamReader isr = new InputStreamReader(fIn);
+
+                char [] inputBuffer = new char[READ_BLOCK_SIZE];
+                String s = "";
+
+                int charRead;
+                while((charRead = isr.read(inputBuffer))>0) {
+                    String readString = String.copyValueOf(inputBuffer, 0 , charRead);
+                    s += readString;
+
+                    inputBuffer = new char[READ_BLOCK_SIZE];
+                }
+                ((Globals) this.getApplication()).setUsername(s);
+
+
+                Toast.makeText(getBaseContext(), "A username Already Exists. Hello "+ s + "!",
+                       Toast.LENGTH_LONG).show();
+
+           }
+
+            else{
+            ((Globals) this.getApplication()).setUsername(usernameEditText.getText().toString());
+
+            fOut = openFileOutput(fileName, MODE_PRIVATE);
+
+            OutputStreamWriter osw = new OutputStreamWriter(fOut);
+
+            osw.write(str);
+            osw.flush();
+            osw.close();
+
+            Toast.makeText(getBaseContext(), "Username saved!", Toast.LENGTH_LONG).show();
+
+            }
+
+        }
+        catch (IOException ioe){
+            ioe.printStackTrace();
+        }
 
         startActivity(new Intent(this, MainMenuActivity.class));
     }

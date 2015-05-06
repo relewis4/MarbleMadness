@@ -214,6 +214,10 @@ public class GameController implements SensorEventListener {
         }
     }
 
+    public void setAwayBallXandY(int newX, int newY){
+        awayBall.setXandY(newX, newY);
+    }
+
     public void setHomeBallXandY(int x, int y){
         homeBall.setXandY(x,y);
     }

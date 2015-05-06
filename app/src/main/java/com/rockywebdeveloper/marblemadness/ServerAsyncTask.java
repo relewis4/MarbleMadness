@@ -6,47 +6,62 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketAddress;
 
+/*
+ *    Created by Andrew Schaefer on 3/1/15.
+ *    Modified by Zach Nelson.
+ */
 public class ServerAsyncTask extends AsyncTask<Integer, String, Void> {
 
     private ServerSocket server;
     private Socket client;
     private int port;
     private Context context;
+    private GameController mGameController;
 
-    public ServerAsyncTask(Context context, GameController gameController){
+    public ServerAsyncTask(Context context, GameController controller){
         this.context = context;
+        mGameController = controller;
     }
 
     @Override
     protected Void doInBackground(Integer... params){
         try {
-            publishProgress("Waiting for connection");
             port = params[0];
             server = new ServerSocket(port);
-            publishProgress("Server port opened:"+server.getLocalPort());
             client = server.accept();
 
-            publishProgress("Connected to Client");
+            ClientAsyncTask clientAsyncTask = new ClientAsyncTask(context, client.getInetAddress(), mGameController);
+            clientAsyncTask.execute(port+1);
 
-            while(client.isConnected()){
-            /*
-             * use gamecontroller to get x and y constantly while(gameInProgress)
-             */
+            while(mGameController.isGameInProgress()){
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(client.getInputStream()));
+                    String temp = bufferedReader.readLine();
+                    publishProgress(temp);
             }
         } catch (IOException e){
             e.printStackTrace();
         } finally {}
-
-        publishProgress("Connection Closed");
         return null;
     }
 
     protected void onProgressUpdate(String... progress){
-        Toast.makeText(context, progress[0], Toast.LENGTH_SHORT).show();
+        try {
+            String[] coordinates = progress[0].split(",");         //x then y
+            int x = Integer.parseInt(coordinates[0]);
+            int y = Integer.parseInt(coordinates[1]);
+            mGameController.setAwayBallXandY(x, y);
+        } catch (ArrayIndexOutOfBoundsException e){
+            //ignore
+        } catch (NumberFormatException e1){
+            //ignore
+        }
     }
 }

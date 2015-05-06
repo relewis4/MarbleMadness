@@ -8,38 +8,46 @@ import android.widget.Toast;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
+/*
+ *    Created by Andrew Schaefer on 3/1/15.
+ *    Modified by Zach Nelson.
+ */
 public class ClientAsyncTask extends AsyncTask<Integer, String, Void> {
     private Socket client;
     private int port;
     private InetAddress host;
     private Context context;
+    private GameController mGameController;
 
-    public ClientAsyncTask(Context context, InetAddress host, GameController gameController){
+    public ClientAsyncTask(Context context, InetAddress host, GameController controller){
         this.context = context;
         this.host = host;
+        mGameController = controller;
     }
 
     @Override
     protected Void doInBackground(Integer... params){
         port = params[0];
         client = new Socket();
-        publishProgress("Attempting to connect to: "+host);
 
         try{
             client.connect((new InetSocketAddress(host, port)), 0);
 
-            /**
-             * implement some sort of while loop while game is in progress
-             * get X,Y coordinates of Server player
-             */
+            ServerAsyncTask serverAsyncTask = new ServerAsyncTask(context, mGameController);
+            serverAsyncTask.execute(port+1);
 
-            /*
-             * use gamecontroller to get x and y constantly while(gameInProgress)
-             */
+            while(mGameController.isGameInProgress()){
+                PrintWriter pw = new PrintWriter(new BufferedWriter(new OutputStreamWriter(client.getOutputStream())));
+                pw.println(String.valueOf(mGameController.getHomeBallX()) + "," + String.valueOf(mGameController.getHomeBallY()));
+                pw.flush();
+            }
+
             client.close();
         } catch (IOException e){
             publishProgress(e.getMessage());
@@ -51,6 +59,6 @@ public class ClientAsyncTask extends AsyncTask<Integer, String, Void> {
     }
 
     protected void onProgressUpdate(String... progress){
-        Toast.makeText(context, progress[0], Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, progress[0], Toast.LENGTH_LONG).show();
     }
 }
