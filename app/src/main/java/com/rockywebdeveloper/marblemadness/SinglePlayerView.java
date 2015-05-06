@@ -68,7 +68,7 @@ public class SinglePlayerView extends View {
         right = widthIndex * 3 + top /2;
         bottom = top + 30;
         canvas.drawRect(left, top, right, bottom, sPaint);
-       mGameController.addWall(new float[]{left, top, right, bottom});
+        mGameController.addWall(new float[]{left, top, right, bottom});
 
         //vertical line first
         top = heightIndex;
