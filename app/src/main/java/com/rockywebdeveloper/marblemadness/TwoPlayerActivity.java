@@ -8,11 +8,17 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 
-public class TwoPlayerActivity extends Activity {
+/*
+ *    ConnectedActivity.java created by Andrew Schaefer on 3/1/15.
+ *    Modified into TwoPlayerActivity by Zach Nelson.
+ */
+public class TwoPlayerActivity extends WifiP2pActivity {
 
     private GameController mGameController;
     private TwoPlayerView view;
-    private final int PORT = 1234;
+    private final int PORT_1 = 49502;
+    private final int PORT_2 = 49501;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,6 +26,9 @@ public class TwoPlayerActivity extends Activity {
         mGameController = new GameController(300, 300, 900, 900, BitmapFactory.decodeResource(getResources(), R.drawable.ball1), BitmapFactory.decodeResource(getResources(), R.drawable.ball2),this);
         view = new TwoPlayerView(this, mGameController);
         setContentView(view);
+        mGameController.setGameInProgress(true);
+
+
         Intent intent = this.getIntent();
         Bundle bundle = intent.getExtras();
 
@@ -27,10 +36,14 @@ public class TwoPlayerActivity extends Activity {
 
         if(info.isGroupOwner){
             ServerAsyncTask serverAsyncTask = new ServerAsyncTask(getApplicationContext(), mGameController);
-            serverAsyncTask.execute(PORT);
+            serverAsyncTask.execute(PORT_1);
+            //ClientAsyncTask clientAsyncTask = new ClientAsyncTask(getApplicationContext(), info.groupOwnerAddress, mGameController);
+            //clientAsyncTask.execute(PORT_2);
         } else {
+            //ServerAsyncTask serverAsyncTask = new ServerAsyncTask(getApplicationContext(), mGameController);
+            //serverAsyncTask.execute(PORT_2);
             ClientAsyncTask clientAsyncTask = new ClientAsyncTask(getApplicationContext(), info.groupOwnerAddress, mGameController);
-            clientAsyncTask.execute(PORT);
+            clientAsyncTask.execute(PORT_1);
         }
 
         View decorView = getWindow().getDecorView();
@@ -44,6 +57,7 @@ public class TwoPlayerActivity extends Activity {
     public void onResume(){
         super.onResume();
         mGameController.onResume();
+
     }
 
     @Override

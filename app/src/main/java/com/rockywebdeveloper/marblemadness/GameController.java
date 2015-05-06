@@ -47,6 +47,7 @@ public class GameController implements SensorEventListener {
     private String timerValue;
     private boolean gameInProgress;
     private boolean twoPlayerGame;
+    private boolean intersecting;
 
     public  GameController(int homeBallX, int homeBallY, Bitmap image, Context context){
         walls = new ArrayList();
@@ -61,6 +62,7 @@ public class GameController implements SensorEventListener {
         awayBall = new Ball(awayBallX, awayBallY, image2);
         initalizeSensors(homeBallX, homeBallY, context);
         twoPlayerGame = true;
+        intersecting = false;
     }
     private void initalizeSensors(int x, int y, Context context){
         this.x = x;
@@ -172,6 +174,10 @@ public class GameController implements SensorEventListener {
                 setXandY(axisX, axisY);
             }
         }
+    }
+
+    public void setAwayBallXandY(int newX, int newY){
+        awayBall.setXandY(newX, newY);
     }
 
     private void setXandY(float newX, float newY) {
