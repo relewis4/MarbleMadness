@@ -53,6 +53,10 @@
             android:name=".WifiP2pActivity"
             android:label="WifiP2pActivity" >
         </activity>
+
+        <activity android:name=".HighScoreView"
+            android:label="HighScoreView">
+        </activity>
     </application>
 
 </manifest>

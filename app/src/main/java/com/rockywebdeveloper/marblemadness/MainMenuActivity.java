@@ -1,11 +1,13 @@
 package com.rockywebdeveloper.marblemadness;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
 
 
 public class MainMenuActivity extends ActionBarActivity {
@@ -49,5 +51,6 @@ public class MainMenuActivity extends ActionBarActivity {
 
     public void handleHighScoresClick(View v){
         //insert code to start high scores activity
+        startActivity(new Intent(this, HighScoreView.class));
     }
 }
