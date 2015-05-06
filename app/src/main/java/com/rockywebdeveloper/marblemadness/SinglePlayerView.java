@@ -4,9 +4,10 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.graphics.RectF;
 import android.view.View;
+
+import java.util.Timer;
 
 /**
  * Created by stephanieadams on 4/29/15.
@@ -24,6 +25,7 @@ public class SinglePlayerView extends View {
     private float heightIndex;
     private float widthIndex;
 
+
     public SinglePlayerView(Context context, GameController gameController) {
         super(context);
         mGameController = gameController;
@@ -36,7 +38,7 @@ public class SinglePlayerView extends View {
         canvasHeight = canvas.getHeight();
         canvasWidth = canvas.getWidth();
         mGameController.setBounds(canvasHeight,canvasWidth);
-
+        String start = "START!";
         heightIndex = canvasHeight / 3;
         widthIndex = canvasWidth / 4;
 
@@ -108,6 +110,15 @@ public class SinglePlayerView extends View {
 
         setHomeBall(mGameController.getHomeBallX(), mGameController.getHomeBallY());
         canvas.drawBitmap(mGameController.getHomeBallImage(), homeBallX, homeBallY, new Paint());
+            
+            float startX = 150;
+            float startY = 500;
+            sPaint.setColor(Color.BLUE);
+            sPaint.setTextSize(300);
+            mGameController.startTimer();
+            canvas.drawText(mGameController.getTimer(), startX, startY, sPaint);
+
+
         invalidate();
     }
 
@@ -115,4 +126,7 @@ public class SinglePlayerView extends View {
         homeBallX = x;
         homeBallY = y;
     }
+
+
+
 }

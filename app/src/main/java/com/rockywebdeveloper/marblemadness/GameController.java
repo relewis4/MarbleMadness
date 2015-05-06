@@ -4,7 +4,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.RectF;
 import android.os.Handler;
-import android.os.SystemClock;
+
+
 
 import java.util.ArrayList;
 
@@ -20,6 +21,9 @@ public class GameController {
     private float[] gameBounds;
     private float mCanvasHeight;
     private float mCanvasWidth;
+    private Context mContext;
+    private int minutes;
+    private int seconds;
 
     private Handler customHandler = new Handler();
     private long startTime = 0L;
@@ -31,12 +35,14 @@ public class GameController {
     private boolean twoPlayerGame;
 
     public  GameController(int homeBallX, int homeBallY, Context context){
+        mContext = context;
         walls = new ArrayList();
         homeBall = new Ball(homeBallX, homeBallY, context);
         twoPlayerGame = false;
     }
 
     public GameController(int homeBallX, int homeBallY, int awayBallX, int awayBallY, Context context) {
+       mContext = context;
         walls = new ArrayList();
         homeBall = new Ball(homeBallX, homeBallY, context);
         awayBall = new AwayBall(awayBallX, awayBallY, context);
@@ -142,7 +148,7 @@ public class GameController {
     }
 
     public void startTimer() {
-        startTime = SystemClock.uptimeMillis();
+        startTime = System.currentTimeMillis();
         customHandler.postDelayed(updateTimerThread, 0);
 
     }
@@ -158,18 +164,31 @@ public class GameController {
 
     private Runnable updateTimerThread = new Runnable() {
         public void run() {
-            timeInMilliseconds = SystemClock.uptimeMillis() - startTime;
-            updatedTime = timeSwapBuff + timeInMilliseconds;
-            int secs = (int) (updatedTime / 1000);
+            timeInMilliseconds = System.currentTimeMillis() - startTime;
+
+            int secs = (int) timeInMilliseconds / 1000;
             int mins = secs / 60;
             secs = secs % 60;
-            int milliseconds = (int) (updatedTime % 1000);
-            timerValue = "" + mins + ":"
-                            + String.format("%02d", secs) + ":"
-                            + String.format("%03d", milliseconds);
+            setUiTimer(mins, secs);
+            customHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    timerValue = uiTimer();
+                }
+            });
+
             customHandler.postDelayed(this, 0);
         }
     };
+
+    private void setUiTimer(int mins, int secs){
+        minutes = mins;
+        seconds = secs;
+    }
+
+    private String uiTimer(){
+        return timerValue = String.format("%d:%02d", minutes, seconds);
+    }
 
     public void onResume(){
         homeBall.onResume();
