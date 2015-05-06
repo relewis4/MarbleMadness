@@ -1,8 +1,7 @@
 package com.rockywebdeveloper.marblemadness;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,8 +16,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.IOException;
 
-
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends Activity {
 
     private String fileName;
     static final  int READ_BLOCK_SIZE = 100;

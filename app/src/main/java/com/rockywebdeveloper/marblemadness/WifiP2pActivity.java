@@ -1,5 +1,6 @@
 package com.rockywebdeveloper.marblemadness;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -11,10 +12,13 @@ import android.net.wifi.p2p.WifiP2pDeviceList;
 import android.net.wifi.p2p.WifiP2pInfo;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.widget.Toast;
 
-public class WifiP2pActivity extends ActionBarActivity implements WifiP2pManager.ConnectionInfoListener, WifiP2pManager.PeerListListener{
+/*
+ *    Created by Andrew Schaefer on 3/1/15.
+ *    Modified by Zach Nelson.
+ */
+public class WifiP2pActivity extends Activity implements WifiP2pManager.ConnectionInfoListener, WifiP2pManager.PeerListListener{
 
     private Boolean isWifiP2pEnabled = false;
     private Boolean isConnected = false;

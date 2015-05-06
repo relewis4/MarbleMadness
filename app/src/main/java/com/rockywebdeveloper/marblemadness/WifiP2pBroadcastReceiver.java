@@ -6,6 +6,10 @@ import android.content.Intent;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.net.wifi.p2p.WifiP2pManager.Channel;
 
+/*
+ *    Created by Andrew Schaefer on 3/1/15.
+ *    Modified by Zach Nelson.
+ */
 public class WifiP2pBroadcastReceiver extends BroadcastReceiver{
 
     private WifiP2pManager manager;
